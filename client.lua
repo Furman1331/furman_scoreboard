@@ -77,7 +77,7 @@ Citizen.CreateThread(function()
 				IsDisplaying = false
 				if IsEntityVisible(Ped.Id) then
 					TriggerServerEvent('esx_rpchat:sendProximityMessage', nil, 45.0, "", { 221, 153, 254 }, "^*Obywatel[" .. GetPlayerServerId(PlayerId()) .. "] przegląda wykaz mieszkańców.", nil)
-					if not IsPedInAnyVehicle(Ped.Id, false) and not IsEntityDead(Ped.Id) and not IsPedFalling(Ped.Id) and not IsPedCuffed(Ped.Id) and not IsPedDiving(Ped.Id) and not IsPedInCover(Ped.Id, false) and not IsPedInParachuteFreeFall(Ped.Id) and GetPedParachuteState(Ped.Id) < 1 and not exports['esx_policejob']:isHandcuffed() then
+					if not IsPedInAnyVehicle(Ped.Id, false) and not IsEntityDead(Ped.Id) and not IsPedFalling(Ped.Id) and not IsPedCuffed(Ped.Id) and not IsPedDiving(Ped.Id) and not IsPedInCover(Ped.Id, false) and not IsPedInParachuteFreeFall(Ped.Id) and GetPedParachuteState(Ped.Id) < 1 then
 						TaskPlayAnim(Ped.Id, "amb@world_human_clipboard@male@idle_a", "idle_a", 8.0, -8.0, -1, 1, 0.0, false, false, false)
 						IsDisplaying = true
 
@@ -97,25 +97,23 @@ Citizen.CreateThread(function()
 			if IsDisplaying ~= nil then
 				if IsDisplaying == false or IsEntityPlayingAnim(Ped.Id, "amb@world_human_clipboard@male@idle_a", "idle_a", 3) then
 					PlayerList()
-					if not exports['esx_property']:isInProperty() then
-						local ped = Ped.Id
-						if Ped.Spectate then
-							ped = Ped.Spectate
-						end
+					local ped = Ped.Id
+					if Ped.Spectate then
+						ped = Ped.Spectate
+					end
 
-						local pid = PlayerId()
-						for _, player in ipairs(GetActivePlayers()) do
-							if id ~= player then
-								local playerPed = GetPlayerPed(player)
-								if IsEntityVisible(playerPed) then
-									local coords1 = GetEntityCoords(ped, true)
-									local coords2 = GetEntityCoords(playerPed, true)
-									if #(coords1 - coords2) < 40.0 then
-										DrawText3D(coords2.x, coords2.y, coords2.z + 1.2, GetPlayerServerId(player), (NetworkIsPlayerTalking(player) and {0, 0, 255} or {255, 255, 255}))
-									end
+					local pid = PlayerId()
+					for _, player in ipairs(GetActivePlayers()) do
+						if id ~= player then
+							local playerPed = GetPlayerPed(player)
+							if IsEntityVisible(playerPed) then
+								local coords1 = GetEntityCoords(ped, true)
+								local coords2 = GetEntityCoords(playerPed, true)
+								if #(coords1 - coords2) < 40.0 then
+									DrawText3D(coords2.x, coords2.y, coords2.z + 1.2, GetPlayerServerId(player), (NetworkIsPlayerTalking(player) and {0, 0, 255} or {255, 255, 255}))
 								end
-							end  
-						end
+							end
+						end  
 					end
 				end
 
